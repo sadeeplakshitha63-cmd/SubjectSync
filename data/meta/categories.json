@@ -1,0 +1,11 @@
+{
+  "subjects": [
+    { "id": "math", "title": "Mathematics", "icon": "📐" },
+    { "id": "science", "title": "Science", "icon": "🔬" },
+    { "id": "history", "title": "History", "icon": "🏛️" }
+  ],
+  "languages": [
+    { "id": "english", "title": "English", "icon": "🇬🇧" },
+    { "id": "sinhala", "title": "Sinhala", "icon": "🇱🇰" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Algebra Basics: Understanding Variables",
+  "category": "Math",
+  "content": "Algebra is the part of mathematics that helps represent problems or situations in the form of mathematical expressions. In algebra, we use variables like x, y, z alongside numbers. Imagine a box where you don't know the exact count of items inside—that's a variable! \n\n### Key Concepts:\n1. **Variables**: Placeholders for unknown values.\n2. **Constants**: Fixed values that don't change.\n3. **Equations**: Mathematical statements showing equality.",
+  "images": [
+    { "url": "/images/algebra-1.jpg", "caption": "Variables in action" }
+  ],
+  "videoUrl": "https://www.youtube.com/embed/grnP3mduZ6M",
+  "humanizedBy": "Ed Bot v1.0",
+  "publishedAt": "2026-04-08T12:00:00Z"
+}

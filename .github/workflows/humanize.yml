@@ -1,0 +1,38 @@
+name: Ed Autonomous Bot
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour (24/7)
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic from Admin Panel'
+        required: false
+
+jobs:
+  humanize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: pip install google-generativeai
+        
+      - name: Run Ed Engine
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TOPIC: ${{ github.event.inputs.topic }}
+        run: python scripts/engine.py
+        
+      - name: Commit and Push
+        run: |
+          git config --global user.name "Ed Bot"
+          git config --global user.email "bot@ed-platform.edu"
+          git add data/
+          git commit -m "Auto-humanized content: ${{ github.event.inputs.topic || 'Hourly Update' }}"
+          git push
