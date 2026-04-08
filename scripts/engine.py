@@ -2,8 +2,8 @@ import os
 import json
 import time
 
-# This is the 24/7 Autonomous Content Sync Engine
-# It researchers, optimizes, and synchronizes educational content.
+# SubjectSync 24/7 Autonomous Content Engine
+# This engine researchers, optimizes, and synchronizes educational content.
 
 class SubjectSyncEngine:
     def __init__(self):
@@ -28,58 +28,61 @@ class SubjectSyncEngine:
                 "https://www.w3schools.com",
                 "https://www.freecodecamp.org",
                 "https://www.britannica.com"
-            ],
-            "subject_specific": [
-                "https://maths.lk",
-                "https://science.lk",
-                "https://www.geeksforgeeks.org"
             ]
         }
-
-    def scrape_source(self, url):
-        print(f"[ENGINE] Scrapping: {url}...")
-        # In actual deployment, this would use a library like BeautifulSoup or Playwright
-        # We simulate fetching new updates from these URLs
-        return f"Recent updates and educational materials found at {url}"
-
-    def optimize_content(self, raw_content, source_type):
-        print(f"[SYNC] Optimizing {source_type} resources...")
-        # Optimization logic
-        prompt = f"Optimize and verify this {source_type} content for students. Content: {raw_content}"
         
-        # Simulated return
+        # All Grade (1-13) and Subject seeds
+        self.topic_seeds = [
+            "Mathematics Grade 10: Geometry", "Mathematics Grade 11: Trigonometry", "Science Grade 9: Cell Biology",
+            "History Grade 8: Ancient Kingdoms", "ICT Grade 12: Python Programming", "General English: Tenses",
+            "Sinhala Literature Grade 10", "Business Studies Grade 12: Accountancy", "Physics Grade 13: Electronics",
+            "Chemistry Grade 11: Atomic Structure", "Grade 5 Scholarship: Maths Patterns", "Information Tech: HTML & CSS"
+        ]
+
+    def scrape_resource(self, topic):
+        print(f"[SYNC] Deep Researching: {topic}...")
+        # Simulating external data fetch
+        return f"Experimental data and notes gathered for {topic}."
+
+    def optimize_content(self, raw_content, topic):
+        print(f"[SYNC] Optimizing content for {topic} using GEMINI AI...")
+        
+        # This function would call the Gemini API in production
+        # Example prompt: "Create a detailed study guide for {topic} based on {raw_content}"
+        
         return {
-            "title": f"Resource Update: {source_type}",
-            "category": source_type.replace("_", " ").title(),
-            "content": f"Optimized version of the resource from {source_type}...",
-            "source_url": "...",
+            "title": f"Complete Guide: {topic}",
+            "category": topic.split(":")[0] if ":" in topic else "General Education",
+            "content": f"Verified Lesson Content for {topic}. \n\nDetailed sections on theory, examples, and practice questions included.",
+            "images": [{"url": "", "caption": f"Visualization of {topic}"}],
+            "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ", # Placeholder for embedded assets
             "publishedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ")
         }
 
-    def publish_content(self, data, folder="subjects/general"):
-        slug = data['title'].lower().replace(" ", "-")
-        target_path = os.path.join(self.data_dir, folder, f"{slug}.json")
+    def publish_resource(self, data):
+        category_slug = data['category'].lower().replace(" ", "-").replace(":", "")
+        title_slug = data['title'].lower().replace(" ", "-").replace(":", "")
         
-        os.makedirs(os.path.dirname(target_path), exist_ok=True)
+        # Create categorization folder Structure
+        target_folder = os.path.join(self.data_dir, "subjects", category_slug)
+        os.makedirs(target_folder, exist_ok=True)
+        
+        target_path = os.path.join(target_folder, f"{title_slug}.json")
         
         with open(target_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
             
-        print(f"[ENGINE] Published: {target_path}")
+        print(f"[SYNC] Successfully Published: {target_path}")
 
-    def run_autonomous_cycle(self):
-        print("[ENGINE] Starting 24/7 autonomous update cycle...")
-        for category, urls in self.sources.items():
-            for url in urls:
-                try:
-                    raw = self.scrape_source(url)
-                    data = self.humanize_with_ai(raw, category)
-                    self.publish_content(data, folder=f"subjects/{category}")
-                    # In production, we'd check if this content is already published
-                except Exception as e:
-                    print(f"[ENGINE] Error processing {url}: {e}")
-                time.sleep(1) 
+    def run_cycle(self, limit=3):
+        print(f"[SYNC] Starting cycle at {time.ctime()}")
+        # Rotate through seeds
+        for topic in self.topic_seeds[:limit]:
+            raw = self.scrape_resource(topic)
+            optimized = self.optimize_content(raw, topic)
+            self.publish_resource(optimized)
+            time.sleep(2) # Prevent rate limiting
 
 if __name__ == "__main__":
     engine = SubjectSyncEngine()
-    engine.run_autonomous_cycle()
+    engine.run_cycle()

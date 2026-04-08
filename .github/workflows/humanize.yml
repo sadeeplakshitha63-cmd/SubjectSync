@@ -1,16 +1,16 @@
-name: Ed Autonomous Bot
+name: SubjectSync Content Engine
 
 on:
   schedule:
-    - cron: '0 * * * *' # Runs every hour (24/7)
+    - cron: '*/30 * * * *' # Runs every 30 minutes for 24/7 coverage
   workflow_dispatch:
     inputs:
       topic:
-        description: 'Topic from Admin Panel'
+        description: 'Specific Topic to Sync'
         required: false
 
 jobs:
-  humanize:
+  synchronize:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,16 +23,16 @@ jobs:
       - name: Install dependencies
         run: pip install google-generativeai
         
-      - name: Run Ed Engine
+      - name: Execution Optimization
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TOPIC: ${{ github.event.inputs.topic }}
         run: python scripts/engine.py
         
-      - name: Commit and Push
+      - name: Deploy Synchronized Resources
         run: |
-          git config --global user.name "Ed Bot"
-          git config --global user.email "bot@ed-platform.edu"
+          git config --global user.name "SubjectSync Engine"
+          git config --global user.email "sync@subjectsync.edu"
           git add data/
-          git commit -m "Auto-humanized content: ${{ github.event.inputs.topic || 'Hourly Update' }}"
+          git commit -m "Auto-sync updated: Recent education resources" || echo "No changes to commit"
           git push
